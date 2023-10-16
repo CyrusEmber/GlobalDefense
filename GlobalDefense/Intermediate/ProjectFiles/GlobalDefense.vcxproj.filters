@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <None Include="..\..\GlobalDefense.uproject" />
+    <Filter Include="Source">
+      <UniqueIdentifier>{F31BBDD1-B3E8-3BCC-9652-680E16935819}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\GlobalDefense.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <None Include="..\..\Source\GlobalDefenseEditor.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <None Include="..\..\.vsconfig" />
+    <Filter Include="Config">
+      <UniqueIdentifier>{FA535FFB-25E1-3D20-B416-52F9BE21E06E}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\DefaultEditor.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEngine.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultGame.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultInput.ini">
+      <Filter>Config</Filter>
+    </None>
+    <Filter Include="Source\GlobalDefense">
+      <UniqueIdentifier>{79646F40-6054-396F-ABDC-4294B8C695D3}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\GlobalDefense\GlobalDefense.Build.cs">
+      <Filter>Source\GlobalDefense</Filter>
+    </None>
+    <ClCompile Include="..\..\Source\GlobalDefense\GlobalDefense.cpp">
+      <Filter>Source\GlobalDefense</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\GlobalDefense\GlobalDefense.h">
+      <Filter>Source\GlobalDefense</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\GlobalDefense\PlayerPawn.cpp">
+      <Filter>Source\GlobalDefense</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\GlobalDefense\PlayerPawn.h">
+      <Filter>Source\GlobalDefense</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\GlobalDefense\TurretPawn.cpp">
+      <Filter>Source\GlobalDefense</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\GlobalDefense\TurretPawn.h">
+      <Filter>Source\GlobalDefense</Filter>
+    </ClInclude>
+    <Filter Include="Source\GlobalDefense\Testing">
+      <UniqueIdentifier>{3EFBDFBB-9CA1-3883-90C0-B1842494E819}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\GlobalDefense\Testing\CollidingPawn.cpp">
+      <Filter>Source\GlobalDefense\Testing</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\GlobalDefense\Testing\CollidingPawn.h">
+      <Filter>Source\GlobalDefense\Testing</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\GlobalDefense\Testing\CollidingPawnMovementComponent.cpp">
+      <Filter>Source\GlobalDefense\Testing</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\GlobalDefense\Testing\CollidingPawnMovementComponent.h">
+      <Filter>Source\GlobalDefense\Testing</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\GlobalDefense\Testing\FloatingActor.cpp">
+      <Filter>Source\GlobalDefense\Testing</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\GlobalDefense\Testing\FloatingActor.h">
+      <Filter>Source\GlobalDefense\Testing</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\GlobalDefense\Testing\TestingCharacter.cpp">
+      <Filter>Source\GlobalDefense\Testing</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\GlobalDefense\Testing\TestingCharacter.h">
+      <Filter>Source\GlobalDefense\Testing</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\GlobalDefense\Testing\TestingPawn.cpp">
+      <Filter>Source\GlobalDefense\Testing</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\GlobalDefense\Testing\TestingPawn.h">
+      <Filter>Source\GlobalDefense\Testing</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\GlobalDefense\Testing\TopDownCameraActor.cpp">
+      <Filter>Source\GlobalDefense\Testing</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\GlobalDefense\Testing\TopDownCameraActor.h">
+      <Filter>Source\GlobalDefense\Testing</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

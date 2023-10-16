@@ -1,0 +1,8 @@
+{
+	"SourceFiles": [
+		"C:\\UE\\GlobalDefense\\Source\\GlobalDefense\\GlobalDefense.Build.cs",
+		"C:\\UE\\GlobalDefense\\Source\\GlobalDefense.Target.cs",
+		"C:\\UE\\GlobalDefense\\Source\\GlobalDefenseEditor.Target.cs"
+	],
+	"EngineVersion": "5.3.1"
+}

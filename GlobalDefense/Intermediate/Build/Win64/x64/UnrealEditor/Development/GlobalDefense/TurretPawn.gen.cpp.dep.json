@@ -1,0 +1,15 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "c:\\ue\\globaldefense\\intermediate\\build\\win64\\unrealeditor\\inc\\globaldefense\\uht\\turretpawn.gen.cpp",
+        "ProvidedModule": "",
+        "PCH": "c:\\ue\\globaldefense\\intermediate\\build\\win64\\x64\\globaldefenseeditor\\development\\unrealed\\sharedpch.unrealed.cpp20.h.pch",
+        "Includes": [
+            "c:\\ue\\globaldefense\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\globaldefense\\definitions.globaldefense.h",
+            "c:\\ue\\globaldefense\\source\\globaldefense\\turretpawn.h",
+            "c:\\ue\\globaldefense\\intermediate\\build\\win64\\unrealeditor\\inc\\globaldefense\\uht\\turretpawn.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

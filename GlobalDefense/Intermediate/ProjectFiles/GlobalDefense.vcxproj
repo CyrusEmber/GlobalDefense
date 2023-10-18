@@ -5,25 +5,97 @@
       <Configuration>Invalid</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Invalid|Win64">
+      <Configuration>Invalid</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="DebugGame|x64">
       <Configuration>DebugGame</Configuration>
       <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DebugGame|Win64">
+      <Configuration>DebugGame</Configuration>
+      <Platform>Win64</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="DebugGame_Editor|x64">
       <Configuration>DebugGame_Editor</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="DebugGame_Editor|Win64">
+      <Configuration>DebugGame_Editor</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="IOS_DebugGame|x64">
+      <Configuration>IOS_DebugGame</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="IOS_DebugGame|Win64">
+      <Configuration>IOS_DebugGame</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="TVOS_DebugGame|x64">
+      <Configuration>TVOS_DebugGame</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="TVOS_DebugGame|Win64">
+      <Configuration>TVOS_DebugGame</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Development|x64">
       <Configuration>Development</Configuration>
       <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Development|Win64">
+      <Configuration>Development</Configuration>
+      <Platform>Win64</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Development_Editor|x64">
       <Configuration>Development_Editor</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Development_Editor|Win64">
+      <Configuration>Development_Editor</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="IOS_Development|x64">
+      <Configuration>IOS_Development</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="IOS_Development|Win64">
+      <Configuration>IOS_Development</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="TVOS_Development|x64">
+      <Configuration>TVOS_Development</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="TVOS_Development|Win64">
+      <Configuration>TVOS_Development</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Shipping|x64">
       <Configuration>Shipping</Configuration>
       <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Shipping|Win64">
+      <Configuration>Shipping</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="IOS_Shipping|x64">
+      <Configuration>IOS_Shipping</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="IOS_Shipping|Win64">
+      <Configuration>IOS_Shipping</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="TVOS_Shipping|x64">
+      <Configuration>TVOS_Shipping</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="TVOS_Shipping|Win64">
+      <Configuration>TVOS_Shipping</Configuration>
+      <Platform>Win64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -57,6 +129,30 @@
       <NMakeCompileFileCommandLine>$(BuildBatchScript) GlobalDefenseEditor Win64 DebugGame -Project="$(SolutionDir)GlobalDefense.uproject" -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
     </NMakeCompile>
   </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='IOS_DebugGame|Win64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) GlobalDefense IOS DebugGame -Project="$(SolutionDir)GlobalDefense.uproject" -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) GlobalDefense IOS DebugGame -Project="$(SolutionDir)GlobalDefense.uproject" -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) GlobalDefense IOS DebugGame -Project="$(SolutionDir)GlobalDefense.uproject" -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\IOS\GlobalDefense-IOS-DebugGame</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='IOS_DebugGame|Win64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) GlobalDefense IOS DebugGame -Project="$(SolutionDir)GlobalDefense.uproject" -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='TVOS_DebugGame|Win64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) GlobalDefense TVOS DebugGame -Project="$(SolutionDir)GlobalDefense.uproject" -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) GlobalDefense TVOS DebugGame -Project="$(SolutionDir)GlobalDefense.uproject" -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) GlobalDefense TVOS DebugGame -Project="$(SolutionDir)GlobalDefense.uproject" -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\TVOS\GlobalDefense-TVOS-DebugGame</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='TVOS_DebugGame|Win64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) GlobalDefense TVOS DebugGame -Project="$(SolutionDir)GlobalDefense.uproject" -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Development|x64'">
     <NMakeBuildCommandLine>$(BuildBatchScript) GlobalDefense Win64 Development -Project="$(SolutionDir)GlobalDefense.uproject" -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine>$(RebuildBatchScript) GlobalDefense Win64 Development -Project="$(SolutionDir)GlobalDefense.uproject" -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
@@ -81,6 +177,30 @@
       <NMakeCompileFileCommandLine>$(BuildBatchScript) GlobalDefenseEditor Win64 Development -Project="$(SolutionDir)GlobalDefense.uproject" -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
     </NMakeCompile>
   </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='IOS_Development|Win64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) GlobalDefense IOS Development -Project="$(SolutionDir)GlobalDefense.uproject" -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) GlobalDefense IOS Development -Project="$(SolutionDir)GlobalDefense.uproject" -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) GlobalDefense IOS Development -Project="$(SolutionDir)GlobalDefense.uproject" -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\IOS\GlobalDefense</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='IOS_Development|Win64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) GlobalDefense IOS Development -Project="$(SolutionDir)GlobalDefense.uproject" -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='TVOS_Development|Win64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) GlobalDefense TVOS Development -Project="$(SolutionDir)GlobalDefense.uproject" -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) GlobalDefense TVOS Development -Project="$(SolutionDir)GlobalDefense.uproject" -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) GlobalDefense TVOS Development -Project="$(SolutionDir)GlobalDefense.uproject" -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\TVOS\GlobalDefense</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='TVOS_Development|Win64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) GlobalDefense TVOS Development -Project="$(SolutionDir)GlobalDefense.uproject" -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Shipping|x64'">
     <NMakeBuildCommandLine>$(BuildBatchScript) GlobalDefense Win64 Shipping -Project="$(SolutionDir)GlobalDefense.uproject" -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine>$(RebuildBatchScript) GlobalDefense Win64 Shipping -Project="$(SolutionDir)GlobalDefense.uproject" -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
@@ -91,6 +211,30 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Shipping|x64'">
     <NMakeCompile>
       <NMakeCompileFileCommandLine>$(BuildBatchScript) GlobalDefense Win64 Shipping -Project="$(SolutionDir)GlobalDefense.uproject" -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='IOS_Shipping|Win64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) GlobalDefense IOS Shipping -Project="$(SolutionDir)GlobalDefense.uproject" -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) GlobalDefense IOS Shipping -Project="$(SolutionDir)GlobalDefense.uproject" -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) GlobalDefense IOS Shipping -Project="$(SolutionDir)GlobalDefense.uproject" -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\IOS\GlobalDefense-IOS-Shipping</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='IOS_Shipping|Win64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) GlobalDefense IOS Shipping -Project="$(SolutionDir)GlobalDefense.uproject" -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='TVOS_Shipping|Win64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) GlobalDefense TVOS Shipping -Project="$(SolutionDir)GlobalDefense.uproject" -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) GlobalDefense TVOS Shipping -Project="$(SolutionDir)GlobalDefense.uproject" -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) GlobalDefense TVOS Shipping -Project="$(SolutionDir)GlobalDefense.uproject" -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\TVOS\GlobalDefense-TVOS-Shipping</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='TVOS_Shipping|Win64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) GlobalDefense TVOS Shipping -Project="$(SolutionDir)GlobalDefense.uproject" -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
     </NMakeCompile>
   </ItemDefinitionGroup>
   <PropertyGroup>
@@ -114,6 +258,12 @@
     <None Include="..\..\Config\DefaultEngine.ini"/>
     <None Include="..\..\Config\DefaultGame.ini"/>
     <None Include="..\..\Config\DefaultInput.ini"/>
+    <ClCompile Include="..\..\Source\GlobalDefense\EnemyBase.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\GlobalDefense\EnemyBase.h"/>
     <None Include="..\..\Source\GlobalDefense\GlobalDefense.Build.cs"/>
     <ClCompile Include="..\..\Source\GlobalDefense\GlobalDefense.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -121,12 +271,24 @@
       <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <ClInclude Include="..\..\Source\GlobalDefense\GlobalDefense.h"/>
+    <ClCompile Include="..\..\Source\GlobalDefense\MyPlayerController.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\GlobalDefense\MyPlayerController.h"/>
     <ClCompile Include="..\..\Source\GlobalDefense\PlayerPawn.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
       <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <ClInclude Include="..\..\Source\GlobalDefense\PlayerPawn.h"/>
+    <ClCompile Include="..\..\Source\GlobalDefense\SimpleGameMode.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\GlobalDefense\SimpleGameMode.h"/>
     <ClCompile Include="..\..\Source\GlobalDefense\TurretPawn.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>

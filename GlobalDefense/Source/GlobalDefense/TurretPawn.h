@@ -18,10 +18,13 @@ public:
 
     // Common properties
     UPROPERTY(EditAnywhere, Category = "Turret Properties")
+    float Health;
+
+    UPROPERTY(EditAnywhere, Category = "Turret Properties")
     float Damage;
 
     UPROPERTY(EditAnywhere, Category = "Turret Properties")
-    float Range = 100.f;
+    float Range = 5 * 100.f;
 
     UPROPERTY(EditAnywhere, Category = "Turret Properties")
     float FireRate;
@@ -58,13 +61,17 @@ protected:
     // Functions to be implemented in derived classes
     virtual void RotateTurretTowardsTarget();
 
-    
+// Functions common to all turrets
+public:
+    virtual void Initialization();
+    virtual void ShowRange();
+    virtual void ShowDebug();
 private:
-    // Functions common to all turrets
     virtual void FindTargetEnemy();
     virtual void Fire();
     virtual void UpgradeInGame();
     virtual void UpgradeBySkillTree();
+
 
 
 

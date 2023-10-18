@@ -20,6 +20,7 @@ void EmptyLinkFunctionForGeneratedCodePlayerPawn() {}
 	ENHANCEDINPUT_API UClass* Z_Construct_UClass_UInputMappingContext_NoRegister();
 	GLOBALDEFENSE_API UClass* Z_Construct_UClass_APlayerPawn();
 	GLOBALDEFENSE_API UClass* Z_Construct_UClass_APlayerPawn_NoRegister();
+	GLOBALDEFENSE_API UClass* Z_Construct_UClass_ATurretPawn_NoRegister();
 	UPackage* Z_Construct_UPackage__Script_GlobalDefense();
 // End Cross Module References
 	void APlayerPawn::StaticRegisterNativesAPlayerPawn()
@@ -65,6 +66,10 @@ void EmptyLinkFunctionForGeneratedCodePlayerPawn() {}
 #endif
 		static const UECodeGen_Private::FObjectPropertyParams NewProp_RightClickAction;
 #if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_BuildAction_MetaData[];
+#endif
+		static const UECodeGen_Private::FObjectPropertyParams NewProp_BuildAction;
+#if WITH_METADATA
 		static const UECodeGen_Private::FMetaDataPairParam NewProp_SpotClass_MetaData[];
 #endif
 		static const UECodeGen_Private::FClassPropertyParams NewProp_SpotClass;
@@ -76,6 +81,10 @@ void EmptyLinkFunctionForGeneratedCodePlayerPawn() {}
 		static const UECodeGen_Private::FMetaDataPairParam NewProp_CursorHitBox_MetaData[];
 #endif
 		static const UECodeGen_Private::FObjectPropertyParams NewProp_CursorHitBox;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_TurretBase_MetaData[];
+#endif
+		static const UECodeGen_Private::FClassPropertyParams NewProp_TurretBase;
 		static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 		static const FCppClassTypeInfoStatic StaticCppClassTypeInfo;
 		static const UECodeGen_Private::FClassParams ClassParams;
@@ -170,6 +179,13 @@ void EmptyLinkFunctionForGeneratedCodePlayerPawn() {}
 #endif
 	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_APlayerPawn_Statics::NewProp_RightClickAction = { "RightClickAction", nullptr, (EPropertyFlags)0x0040000000000001, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(APlayerPawn, RightClickAction), Z_Construct_UClass_UInputAction_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_APlayerPawn_Statics::NewProp_RightClickAction_MetaData), Z_Construct_UClass_APlayerPawn_Statics::NewProp_RightClickAction_MetaData) };
 #if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_APlayerPawn_Statics::NewProp_BuildAction_MetaData[] = {
+		{ "Category", "Input" },
+		{ "ModuleRelativePath", "PlayerPawn.h" },
+	};
+#endif
+	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_APlayerPawn_Statics::NewProp_BuildAction = { "BuildAction", nullptr, (EPropertyFlags)0x0040000000000001, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(APlayerPawn, BuildAction), Z_Construct_UClass_UInputAction_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_APlayerPawn_Statics::NewProp_BuildAction_MetaData), Z_Construct_UClass_APlayerPawn_Statics::NewProp_BuildAction_MetaData) };
+#if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_APlayerPawn_Statics::NewProp_SpotClass_MetaData[] = {
 		{ "Category", "Spawning" },
 		{ "ModuleRelativePath", "PlayerPawn.h" },
@@ -194,16 +210,29 @@ void EmptyLinkFunctionForGeneratedCodePlayerPawn() {}
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_APlayerPawn_Statics::NewProp_CursorHitBox_MetaData[] = {
 		{ "Category", "PlayerPawn" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "// Collision for the cursor\n" },
+		{ "Comment", "// Collision for the current mouse position\n" },
 #endif
 		{ "EditInline", "true" },
 		{ "ModuleRelativePath", "PlayerPawn.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "Collision for the cursor" },
+		{ "ToolTip", "Collision for the current mouse position" },
 #endif
 	};
 #endif
 	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_APlayerPawn_Statics::NewProp_CursorHitBox = { "CursorHitBox", nullptr, (EPropertyFlags)0x00400000000a0009, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(APlayerPawn, CursorHitBox), Z_Construct_UClass_USphereComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_APlayerPawn_Statics::NewProp_CursorHitBox_MetaData), Z_Construct_UClass_APlayerPawn_Statics::NewProp_CursorHitBox_MetaData) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_APlayerPawn_Statics::NewProp_TurretBase_MetaData[] = {
+		{ "Category", "Spawning" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// Turret for spawning\n" },
+#endif
+		{ "ModuleRelativePath", "PlayerPawn.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Turret for spawning" },
+#endif
+	};
+#endif
+	const UECodeGen_Private::FClassPropertyParams Z_Construct_UClass_APlayerPawn_Statics::NewProp_TurretBase = { "TurretBase", nullptr, (EPropertyFlags)0x0044000000010001, UECodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(APlayerPawn, TurretBase), Z_Construct_UClass_UClass, Z_Construct_UClass_ATurretPawn_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_APlayerPawn_Statics::NewProp_TurretBase_MetaData), Z_Construct_UClass_APlayerPawn_Statics::NewProp_TurretBase_MetaData) };
 	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_APlayerPawn_Statics::PropPointers[] = {
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_APlayerPawn_Statics::NewProp_CameraBoom,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_APlayerPawn_Statics::NewProp_TopDownCameraComponent,
@@ -212,9 +241,11 @@ void EmptyLinkFunctionForGeneratedCodePlayerPawn() {}
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_APlayerPawn_Statics::NewProp_SpinAction,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_APlayerPawn_Statics::NewProp_ZoomAction,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_APlayerPawn_Statics::NewProp_RightClickAction,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_APlayerPawn_Statics::NewProp_BuildAction,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_APlayerPawn_Statics::NewProp_SpotClass,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_APlayerPawn_Statics::NewProp_Cursor,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_APlayerPawn_Statics::NewProp_CursorHitBox,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_APlayerPawn_Statics::NewProp_TurretBase,
 	};
 	const FCppClassTypeInfoStatic Z_Construct_UClass_APlayerPawn_Statics::StaticCppClassTypeInfo = {
 		TCppClassTypeTraits<APlayerPawn>::IsAbstract,
@@ -249,15 +280,15 @@ void EmptyLinkFunctionForGeneratedCodePlayerPawn() {}
 	}
 	DEFINE_VTABLE_PTR_HELPER_CTOR(APlayerPawn);
 	APlayerPawn::~APlayerPawn() {}
-	struct Z_CompiledInDeferFile_FID_UE_GlobalDefense_Source_GlobalDefense_PlayerPawn_h_Statics
+	struct Z_CompiledInDeferFile_FID_UE_UnrealProject_GlobalDefense_Source_GlobalDefense_PlayerPawn_h_Statics
 	{
 		static const FClassRegisterCompiledInInfo ClassInfo[];
 	};
-	const FClassRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UE_GlobalDefense_Source_GlobalDefense_PlayerPawn_h_Statics::ClassInfo[] = {
-		{ Z_Construct_UClass_APlayerPawn, APlayerPawn::StaticClass, TEXT("APlayerPawn"), &Z_Registration_Info_UClass_APlayerPawn, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(APlayerPawn), 1568328814U) },
+	const FClassRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UE_UnrealProject_GlobalDefense_Source_GlobalDefense_PlayerPawn_h_Statics::ClassInfo[] = {
+		{ Z_Construct_UClass_APlayerPawn, APlayerPawn::StaticClass, TEXT("APlayerPawn"), &Z_Registration_Info_UClass_APlayerPawn, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(APlayerPawn), 2455533410U) },
 	};
-	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UE_GlobalDefense_Source_GlobalDefense_PlayerPawn_h_510183951(TEXT("/Script/GlobalDefense"),
-		Z_CompiledInDeferFile_FID_UE_GlobalDefense_Source_GlobalDefense_PlayerPawn_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UE_GlobalDefense_Source_GlobalDefense_PlayerPawn_h_Statics::ClassInfo),
+	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UE_UnrealProject_GlobalDefense_Source_GlobalDefense_PlayerPawn_h_2973314598(TEXT("/Script/GlobalDefense"),
+		Z_CompiledInDeferFile_FID_UE_UnrealProject_GlobalDefense_Source_GlobalDefense_PlayerPawn_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UE_UnrealProject_GlobalDefense_Source_GlobalDefense_PlayerPawn_h_Statics::ClassInfo),
 		nullptr, 0,
 		nullptr, 0);
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

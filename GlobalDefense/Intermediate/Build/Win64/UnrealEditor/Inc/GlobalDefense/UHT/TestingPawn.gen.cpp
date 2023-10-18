@@ -93,15 +93,15 @@ void EmptyLinkFunctionForGeneratedCodeTestingPawn() {}
 	}
 	DEFINE_VTABLE_PTR_HELPER_CTOR(ATestingPawn);
 	ATestingPawn::~ATestingPawn() {}
-	struct Z_CompiledInDeferFile_FID_UE_GlobalDefense_Source_GlobalDefense_Testing_TestingPawn_h_Statics
+	struct Z_CompiledInDeferFile_FID_UE_UnrealProject_GlobalDefense_Source_GlobalDefense_Testing_TestingPawn_h_Statics
 	{
 		static const FClassRegisterCompiledInInfo ClassInfo[];
 	};
-	const FClassRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UE_GlobalDefense_Source_GlobalDefense_Testing_TestingPawn_h_Statics::ClassInfo[] = {
+	const FClassRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UE_UnrealProject_GlobalDefense_Source_GlobalDefense_Testing_TestingPawn_h_Statics::ClassInfo[] = {
 		{ Z_Construct_UClass_ATestingPawn, ATestingPawn::StaticClass, TEXT("ATestingPawn"), &Z_Registration_Info_UClass_ATestingPawn, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(ATestingPawn), 3250260530U) },
 	};
-	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UE_GlobalDefense_Source_GlobalDefense_Testing_TestingPawn_h_2393954105(TEXT("/Script/GlobalDefense"),
-		Z_CompiledInDeferFile_FID_UE_GlobalDefense_Source_GlobalDefense_Testing_TestingPawn_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UE_GlobalDefense_Source_GlobalDefense_Testing_TestingPawn_h_Statics::ClassInfo),
+	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_UE_UnrealProject_GlobalDefense_Source_GlobalDefense_Testing_TestingPawn_h_2393954105(TEXT("/Script/GlobalDefense"),
+		Z_CompiledInDeferFile_FID_UE_UnrealProject_GlobalDefense_Source_GlobalDefense_Testing_TestingPawn_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_UE_UnrealProject_GlobalDefense_Source_GlobalDefense_Testing_TestingPawn_h_Statics::ClassInfo),
 		nullptr, 0,
 		nullptr, 0);
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

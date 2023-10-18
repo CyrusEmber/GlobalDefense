@@ -1,0 +1,15 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "c:\\ue\\unrealproject\\globaldefense\\source\\globaldefense\\myplayercontroller.cpp",
+        "ProvidedModule": "",
+        "PCH": "c:\\ue\\unrealproject\\globaldefense\\intermediate\\build\\win64\\x64\\globaldefenseeditor\\development\\unrealed\\sharedpch.unrealed.cpp20.h.pch",
+        "Includes": [
+            "c:\\ue\\unrealproject\\globaldefense\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\globaldefense\\definitions.globaldefense.h",
+            "c:\\ue\\unrealproject\\globaldefense\\source\\globaldefense\\myplayercontroller.h",
+            "c:\\ue\\unrealproject\\globaldefense\\intermediate\\build\\win64\\unrealeditor\\inc\\globaldefense\\uht\\myplayercontroller.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

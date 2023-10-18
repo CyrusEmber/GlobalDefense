@@ -10,6 +10,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "Components/SphereComponent.h"
 #include "DrawDebugHelpers.h"
+#include "TurretPawn.h"
 
 // Sets default values
 APlayerPawn::APlayerPawn()
@@ -24,6 +25,10 @@ APlayerPawn::APlayerPawn()
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
+
+	if (!RootComponent) {
+		RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
+	}
 
 	// Create a camera boom...
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
@@ -124,6 +129,8 @@ void APlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 		EnhancedInputComponent->BindAction(ZoomAction, ETriggerEvent::Triggered, this, &APlayerPawn::Zoom);
 		// Right Clicking
 		EnhancedInputComponent->BindAction(RightClickAction, ETriggerEvent::Started, this, &APlayerPawn::RightClickSelectedActor);
+		// Build
+		EnhancedInputComponent->BindAction(BuildAction, ETriggerEvent::Started, this, &APlayerPawn::Build);
 	}
 }
 
@@ -187,14 +194,54 @@ void APlayerPawn::Zoom(const FInputActionValue& Value)
 	ZoomFrames = 0;
 }
 
+// Need UI interactions
+void APlayerPawn::Build(const FInputActionValue& Value)
+{
+	bIsBuilding = !bIsBuilding;
+	// Check if we are in build mode, need to check this at tick
+	if (bIsBuilding) {
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, FString::Printf(TEXT("In Build Mode")));
+	}
+}
+
 // Only when player right click when they are selecting an actor, we call this function
 void APlayerPawn::RightClickSelectedActor(const FInputActionValue& Value)
 {
-	if (!bIsCursorSelecting) {
-		return;
-	}
-	FString ActorName = SelectedActor->GetName();
-	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Yellow, FString::Printf(TEXT("Right Click on selected Actor: %s"), *ActorName));
+	if (!bIsBuilding) {
+		if (!bIsCursorSelecting) {
+			return;
+		}
+		FString ActorName = SelectedActor->GetName();
+		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Yellow, FString::Printf(TEXT("Right Click on selected Actor: %s"), *ActorName));
+		ATurretPawn* Turret = dynamic_cast<ATurretPawn*>(SelectedActor);
+		if (Turret)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Yellow, FString::Printf(TEXT("Right Click on a turret")));
+			Turret->ShowRange();
+		}
+
+		
+	} 
+	else {
+		if (!bIsCursorSelecting) {
+			GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Yellow, FString::Printf(TEXT("Spawn Something")));
+			FRotator Rotation = FRotator(0, 0, 0);
+			float Scale = 0;
+			FActorSpawnParameters SpawnParams;
+			SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+			FVector NewDestination = FVector(CachedCursorDestination.X, CachedCursorDestination.Y, CachedCursorDestination.Z + 0.f);
+
+			ATurretPawn* NewTurret = GetWorld()->SpawnActor<ATurretPawn>(TurretBase, NewDestination, FRotator::ZeroRotator, SpawnParams);
+			NewTurret->Initialization();
+			//TurretBase->Spawn(CachedCursorDestination, Rotation, Scale);
+		}
+		else {
+			FString ActorName = SelectedActor->GetName();
+			GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Yellow, FString::Printf(TEXT("Right Click on selected Actor: %s"), *ActorName));
+			GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Yellow, FString::Printf(TEXT("You cannot place turret on another turret!")));
+		}
+
+	} 
 }
 
 void APlayerPawn::UpdateZoom(float DeltaTime)
@@ -303,7 +350,6 @@ void APlayerPawn::UpdateCursorLocationByHItResult()
 			MoveCursorGradually(CachedCursorDestination);
 			SetCursorRadiusGradually(0.5 * DefaultCursorRadius);
 		}
-
 	}
 }
 
@@ -345,6 +391,7 @@ void APlayerPawn::UpdateSelectedActor()
 	// Move the cursor to the closest actor smoothly with Lerp transition
 	if (SelectedActor)
 	{
+		//CachedTurret = dynamic_cast<ATurretPawn*>(SelectedActor);
 		// Get the static mesh component of the closest seleted actor
 		UStaticMeshComponent* StaticMeshComponent = SelectedActor->FindComponentByClass<UStaticMeshComponent>();
 		if (!StaticMeshComponent)
@@ -450,7 +497,7 @@ void APlayerPawn::SetCursorRadiusGradually(const float NewCursorRadius)
 {
 	
 	float Scale = 2 * NewCursorRadius / DefaultCursorRadius;
-	FString boolString = bIsCursorSelecting ? TEXT("True") : TEXT("False");
+	//FString boolString = bIsCursorSelecting ? TEXT("True") : TEXT("False");
 
 	FVector NewScale = FVector(Scale, Scale, Scale);
 	Cursor->SetWorldScale3D(FMath::Lerp(Cursor->GetComponentScale(), NewScale, 0.1f));

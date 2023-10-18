@@ -1,11 +1,11 @@
-"C:\UE\GlobalDefense\Intermediate\Build\Win64\UnrealEditor\Inc\GlobalDefense\UHT\PlayerPawn.gen.cpp"
-/FI"C:\UE\GlobalDefense\Intermediate\Build\Win64\x64\GlobalDefenseEditor\Development\UnrealEd\SharedPCH.UnrealEd.Cpp20.h"
-/FI"C:\UE\GlobalDefense\Intermediate\Build\Win64\x64\UnrealEditor\Development\GlobalDefense\Definitions.GlobalDefense.h"
-/Yu"C:\UE\GlobalDefense\Intermediate\Build\Win64\x64\GlobalDefenseEditor\Development\UnrealEd\SharedPCH.UnrealEd.Cpp20.h"
-/Fp"C:\UE\GlobalDefense\Intermediate\Build\Win64\x64\GlobalDefenseEditor\Development\UnrealEd\SharedPCH.UnrealEd.Cpp20.h.pch"
-/Fo"C:\UE\GlobalDefense\Intermediate\Build\Win64\x64\UnrealEditor\Development\GlobalDefense\PlayerPawn.gen.cpp.obj"
-/sourceDependencies "C:\UE\GlobalDefense\Intermediate\Build\Win64\x64\UnrealEditor\Development\GlobalDefense\PlayerPawn.gen.cpp.dep.json"
-@"C:\UE\GlobalDefense\Intermediate\Build\Win64\x64\UnrealEditor\Development\GlobalDefense\GlobalDefense.Shared.rsp"
+"C:\UE\UnrealProject\GlobalDefense\Intermediate\Build\Win64\UnrealEditor\Inc\GlobalDefense\UHT\PlayerPawn.gen.cpp"
+/FI"C:\UE\UnrealProject\GlobalDefense\Intermediate\Build\Win64\x64\GlobalDefenseEditor\Development\UnrealEd\SharedPCH.UnrealEd.Cpp20.h"
+/FI"C:\UE\UnrealProject\GlobalDefense\Intermediate\Build\Win64\x64\UnrealEditor\Development\GlobalDefense\Definitions.GlobalDefense.h"
+/Yu"C:\UE\UnrealProject\GlobalDefense\Intermediate\Build\Win64\x64\GlobalDefenseEditor\Development\UnrealEd\SharedPCH.UnrealEd.Cpp20.h"
+/Fp"C:\UE\UnrealProject\GlobalDefense\Intermediate\Build\Win64\x64\GlobalDefenseEditor\Development\UnrealEd\SharedPCH.UnrealEd.Cpp20.h.pch"
+/Fo"C:\UE\UnrealProject\GlobalDefense\Intermediate\Build\Win64\x64\UnrealEditor\Development\GlobalDefense\PlayerPawn.gen.cpp.obj"
+/sourceDependencies "C:\UE\UnrealProject\GlobalDefense\Intermediate\Build\Win64\x64\UnrealEditor\Development\GlobalDefense\PlayerPawn.gen.cpp.dep.json"
+@"C:\UE\UnrealProject\GlobalDefense\Intermediate\Build\Win64\x64\UnrealEditor\Development\GlobalDefense\GlobalDefense.Shared.rsp"
 /Zc:inline
 /nologo
 /Oi

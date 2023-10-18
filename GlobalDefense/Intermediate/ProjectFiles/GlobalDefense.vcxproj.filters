@@ -30,6 +30,12 @@
     <Filter Include="Source\GlobalDefense">
       <UniqueIdentifier>{79646F40-6054-396F-ABDC-4294B8C695D3}</UniqueIdentifier>
     </Filter>
+    <ClCompile Include="..\..\Source\GlobalDefense\EnemyBase.cpp">
+      <Filter>Source\GlobalDefense</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\GlobalDefense\EnemyBase.h">
+      <Filter>Source\GlobalDefense</Filter>
+    </ClInclude>
     <None Include="..\..\Source\GlobalDefense\GlobalDefense.Build.cs">
       <Filter>Source\GlobalDefense</Filter>
     </None>
@@ -39,10 +45,22 @@
     <ClInclude Include="..\..\Source\GlobalDefense\GlobalDefense.h">
       <Filter>Source\GlobalDefense</Filter>
     </ClInclude>
+    <ClCompile Include="..\..\Source\GlobalDefense\MyPlayerController.cpp">
+      <Filter>Source\GlobalDefense</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\GlobalDefense\MyPlayerController.h">
+      <Filter>Source\GlobalDefense</Filter>
+    </ClInclude>
     <ClCompile Include="..\..\Source\GlobalDefense\PlayerPawn.cpp">
       <Filter>Source\GlobalDefense</Filter>
     </ClCompile>
     <ClInclude Include="..\..\Source\GlobalDefense\PlayerPawn.h">
+      <Filter>Source\GlobalDefense</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\GlobalDefense\SimpleGameMode.cpp">
+      <Filter>Source\GlobalDefense</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\GlobalDefense\SimpleGameMode.h">
       <Filter>Source\GlobalDefense</Filter>
     </ClInclude>
     <ClCompile Include="..\..\Source\GlobalDefense\TurretPawn.cpp">

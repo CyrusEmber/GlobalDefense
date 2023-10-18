@@ -5,6 +5,11 @@
 			"guid": "00000000000000000000000000000000",
 			"description": "Default Uncontrolled Changelist",
 			"files": [
+				"C:/UE/UnrealProject/GlobalDefense/Content/Input/Actions/IA_TopDown_Build.uasset",
+				"C:/UE/UnrealProject/GlobalDefense/Content/Blueprints/Player/BPI_Player1.uasset",
+				"C:/UE/UnrealProject/GlobalDefense/Content/Blueprints/Turret/BP_Turret_Base.uasset",
+				"C:/UE/UnrealProject/GlobalDefense/Content/Input/Mappings/IMC_Default.uasset",
+				"C:/UE/UnrealProject/GlobalDefense/Content/Levels/TestingMap1.umap",
 				"C:/UE/GlobalDefense/Content/StarterContent/HDRI/HDRI_Epic_Courtyard_Daylight.uasset"
 			]
 		}

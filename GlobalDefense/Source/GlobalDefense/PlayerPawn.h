@@ -11,6 +11,7 @@ class UCameraComponent;
 class UInputMappingContext;
 class UInputAction;
 class USphereComponent;
+class ATurretPawn;
 struct FInputActionValue;
 
 UCLASS()
@@ -49,6 +50,9 @@ private:
 	UPROPERTY(EditAnywhere, Category = Input)
 	UInputAction* RightClickAction;
 
+	UPROPERTY(EditAnywhere, Category = Input)
+	UInputAction* BuildAction;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Spawning")
 	TSubclassOf<AActor> SpotClass;
 
@@ -56,9 +60,13 @@ private:
 	UPROPERTY(EditAnywhere, Category = StaticMesh)
 	UStaticMeshComponent* Cursor;
 
-	// Collision for the cursor
+	// Collision for the current mouse position
 	UPROPERTY(VisibleAnywhere)
 	USphereComponent* CursorHitBox;
+
+	// Turret for spawning
+	UPROPERTY(EditDefaultsOnly, Category = "Spawning")
+	TSubclassOf<ATurretPawn> TurretBase;
 
 protected:
 	// Called when the game starts or when spawned
@@ -72,11 +80,12 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 private:
-	// Refactor
+	// Inputs, need refactor to a controller
 	void Move(const FInputActionValue& Value);
 	void MoveActor(FVector2D& Movement);
 	void Spin(const FInputActionValue& Value);
 	void Zoom(const FInputActionValue& Value);
+	void Build(const FInputActionValue& Value);
 	void RightClickSelectedActor(const FInputActionValue& Value);
 
 /** Mutable Game Settings like camera moving speed */
@@ -123,7 +132,12 @@ private:
 	FVector CurrentCursorLocation;
 	FVector TargetCursorLocation;
 	AActor* SelectedActor;
+	ATurretPawn* CachedTurret = nullptr;
 	const float Alpha = 0.1;
+
+private:
+	// Build mode
+	bool bIsBuilding = false;
 
 
 // Helper functions

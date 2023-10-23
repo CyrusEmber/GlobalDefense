@@ -1,8 +1,0 @@
-{
-	"SourceFiles": [
-		"C:\\UE\\UnrealProject\\GlobalDefense\\Source\\GlobalDefense\\GlobalDefense.Build.cs",
-		"C:\\UE\\UnrealProject\\GlobalDefense\\Source\\GlobalDefense.Target.cs",
-		"C:\\UE\\UnrealProject\\GlobalDefense\\Source\\GlobalDefenseEditor.Target.cs"
-	],
-	"EngineVersion": "5.3.1"
-}

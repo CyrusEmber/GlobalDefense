@@ -7,7 +7,20 @@
         "Includes": [
             "c:\\ue\\unrealproject\\globaldefense\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\globaldefense\\definitions.globaldefense.h",
             "c:\\ue\\unrealproject\\globaldefense\\source\\globaldefense\\enemybase.h",
-            "c:\\ue\\unrealproject\\globaldefense\\intermediate\\build\\win64\\unrealeditor\\inc\\globaldefense\\uht\\enemybase.generated.h"
+            "c:\\ue\\unrealproject\\globaldefense\\source\\globaldefense\\playerpawn.h",
+            "c:\\ue\\unrealproject\\globaldefense\\intermediate\\build\\win64\\unrealeditor\\inc\\globaldefense\\uht\\playerpawn.generated.h",
+            "c:\\ue\\unrealproject\\globaldefense\\intermediate\\build\\win64\\unrealeditor\\inc\\globaldefense\\uht\\enemybase.generated.h",
+            "c:\\ue\\unrealproject\\globaldefense\\source\\globaldefense\\turretpawn.h",
+            "c:\\ue\\unrealproject\\globaldefense\\intermediate\\build\\win64\\unrealeditor\\inc\\globaldefense\\uht\\turretpawn.generated.h",
+            "c:\\program files\\epic games\\ue_5.3\\engine\\source\\runtime\\engine\\classes\\kismet\\gameplaystatics.h",
+            "c:\\program files\\epic games\\ue_5.3\\engine\\source\\runtime\\engine\\classes\\kismet\\kismetsystemlibrary.h",
+            "c:\\program files\\epic games\\ue_5.3\\engine\\source\\runtime\\coreuobject\\public\\uobject\\propertyaccessutil.h",
+            "c:\\program files\\epic games\\ue_5.3\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\kismetsystemlibrary.generated.h",
+            "c:\\program files\\epic games\\ue_5.3\\engine\\source\\runtime\\engine\\classes\\sound\\dialoguetypes.h",
+            "c:\\program files\\epic games\\ue_5.3\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\dialoguetypes.generated.h",
+            "c:\\program files\\epic games\\ue_5.3\\engine\\source\\runtime\\engine\\classes\\kismet\\gameplaystaticstypes.h",
+            "c:\\program files\\epic games\\ue_5.3\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\gameplaystaticstypes.generated.h",
+            "c:\\program files\\epic games\\ue_5.3\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\gameplaystatics.generated.h"
         ],
         "ImportedModules": [],
         "ImportedHeaderUnits": []

@@ -7,6 +7,8 @@
         "Includes": [
             "c:\\ue\\unrealproject\\globaldefense\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\globaldefense\\definitions.globaldefense.h",
             "c:\\ue\\unrealproject\\globaldefense\\source\\globaldefense\\enemybase.h",
+            "c:\\ue\\unrealproject\\globaldefense\\source\\globaldefense\\playerpawn.h",
+            "c:\\ue\\unrealproject\\globaldefense\\intermediate\\build\\win64\\unrealeditor\\inc\\globaldefense\\uht\\playerpawn.generated.h",
             "c:\\ue\\unrealproject\\globaldefense\\intermediate\\build\\win64\\unrealeditor\\inc\\globaldefense\\uht\\enemybase.generated.h"
         ],
         "ImportedModules": [],

@@ -88,6 +88,9 @@ private:
 	void Build(const FInputActionValue& Value);
 	void RightClickSelectedActor(const FInputActionValue& Value);
 
+public:
+
+
 /** Mutable Game Settings like camera moving speed */
 private:
 	float MovementSpeed;
@@ -147,6 +150,8 @@ private:
 	void DrawSelectedActorBindingBox(const UStaticMeshComponent* Mesh);
 	void MoveCursorGradually(const FVector Destination);
 	void SetCursorRadiusGradually(const float NewCursorRadius);
+
+
 
 /** Debug */
 private:

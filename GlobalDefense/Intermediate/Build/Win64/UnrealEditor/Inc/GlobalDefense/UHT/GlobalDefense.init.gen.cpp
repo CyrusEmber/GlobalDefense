@@ -17,7 +17,7 @@ void EmptyLinkFunctionForGeneratedCodeGlobalDefense_init() {}
 				nullptr,
 				0,
 				PKG_CompiledIn | 0x00000000,
-				0x538880DB,
+				0x9BF4C083,
 				0x7A66EC81,
 				METADATA_PARAMS(0, nullptr)
 			};
@@ -25,5 +25,5 @@ void EmptyLinkFunctionForGeneratedCodeGlobalDefense_init() {}
 		}
 		return Z_Registration_Info_UPackage__Script_GlobalDefense.OuterSingleton;
 	}
-	static FRegisterCompiledInInfo Z_CompiledInDeferPackage_UPackage__Script_GlobalDefense(Z_Construct_UPackage__Script_GlobalDefense, TEXT("/Script/GlobalDefense"), Z_Registration_Info_UPackage__Script_GlobalDefense, CONSTRUCT_RELOAD_VERSION_INFO(FPackageReloadVersionInfo, 0x538880DB, 0x7A66EC81));
+	static FRegisterCompiledInInfo Z_CompiledInDeferPackage_UPackage__Script_GlobalDefense(Z_Construct_UPackage__Script_GlobalDefense, TEXT("/Script/GlobalDefense"), Z_Registration_Info_UPackage__Script_GlobalDefense, CONSTRUCT_RELOAD_VERSION_INFO(FPackageReloadVersionInfo, 0x9BF4C083, 0x7A66EC81));
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "PlayerPawn.h"
 #include "GameFramework/Pawn.h"
 #include "EnemyBase.generated.h"
 
@@ -22,6 +23,9 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Turret Properties")
 	float Damage;
 
+	UPROPERTY(EditAnywhere, Category = "Turret Properties")
+	float Speed = 50;
+
 	// Static Mesh 
 	UPROPERTY(EditAnywhere, Category = StaticMesh)
 	UStaticMeshComponent* StaticMeshComponent;
@@ -40,7 +44,13 @@ public:
 	// Functions common to all turrets
 public:
 	virtual void Initialization();
-private:
+
+protected:
 	virtual void Move();
+	// Currently find a random turret target
+	virtual void FindTarget();
+	virtual void GetMovingDirection();
+	FVector Direction;
+	ATurretPawn* Target;
 
 };

@@ -21,6 +21,8 @@ ATurretPawn::ATurretPawn()
 	TriggerVolume = CreateDefaultSubobject<USphereComponent>(TEXT("TriggerVolume"));
 	TriggerVolume->SetupAttachment(RootComponent);
 
+	TriggerVolume->InitSphereRadius(Range);
+	TriggerVolume->SetCollisionProfileName(TEXT("OverlapAllDynamic"));
 	TriggerVolume->SetGenerateOverlapEvents(true);
 
 
@@ -36,9 +38,10 @@ void ATurretPawn::BeginPlay()
 	// Setup Trigger Volume
 	if (TriggerVolume)
 	{
-		TriggerVolume->InitSphereRadius(Range);
-		TriggerVolume->SetCollisionProfileName(TEXT("OverlapAllDynamic"));
+		//TriggerVolume->SetSphereRadius(200.f);
 
+		FCollisionShape shape = TriggerVolume->GetCollisionShape();
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, FString::Printf(TEXT("Left %f"), shape.GetSphereRadius()));
 		TriggerVolume->OnComponentBeginOverlap.AddDynamic(this, &ATurretPawn::TriggerEnter);
 		TriggerVolume->OnComponentEndOverlap.AddDynamic(this, &ATurretPawn::OnOverlapEnd);
 	}
@@ -53,19 +56,22 @@ void ATurretPawn::BeginPlay()
 
 void ATurretPawn::TriggerEnter(class UPrimitiveComponent* HitComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Yellow, FString::Printf(TEXT("Entered")));
+	FString ActorName = OtherActor->GetName();
+	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, FString::Printf(TEXT("Entered %s"), *ActorName));
 }
 
 void ATurretPawn::OnOverlapEnd(class UPrimitiveComponent* HitComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Yellow, FString::Printf(TEXT("Left")));
+	FString ActorName = OtherActor->GetName();
+	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, FString::Printf(TEXT("Left %s"), *ActorName));
 }
 
 // Called every frame
 void ATurretPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	//FCollisionShape shape = TriggerVolume->GetCollisionShape();
+	//GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, FString::Printf(TEXT("Radius %f"), shape.GetSphereRadius()));
 }
 
 // Called to bind functionality to input

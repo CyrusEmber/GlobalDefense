@@ -28,6 +28,49 @@ ATurretPawn::ATurretPawn()
 
 }
 
+TurretInfo ATurretPawn::GetTurretInfo()
+{
+	TurretInfo Info;
+	Info.Type = Type;
+	Info.Damage = Damage;
+	Info.Range = Range;
+	Info.FireRate = FireRate;
+	Info.Cost = Cost;
+	Info.HealthRatio = CurrentHealth / MaxHealth;  // Assuming you have a CurrentHealth member in ATurretPawn
+
+	return Info;
+}
+
+FString ATurretPawn::GetType()
+{
+	return Type;
+}
+
+float ATurretPawn::GetDamage()
+{
+	return Damage;
+}
+
+float ATurretPawn::GetRange()
+{
+	return Range;
+}
+
+float ATurretPawn::GetFireRate()
+{
+	return FireRate;
+}
+
+float ATurretPawn::GetHealthRatio()
+{
+	return CurrentHealth / MaxHealth;
+}
+
+int ATurretPawn::GetCost()
+{
+	return Cost;
+}
+
 // Called when the game starts or when spawned
 void ATurretPawn::BeginPlay()
 {

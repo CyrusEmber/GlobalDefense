@@ -7,6 +7,15 @@
 #include "TurretPawn.generated.h"
 
 class USphereComponent;
+struct TurretInfo
+{
+    FString Type = "";
+    float Damage = 0;
+    float Range = 0;
+    float FireRate = 0;
+    int Cost = 0;
+    float HealthRatio = 0;
+};
 UCLASS()
 class GLOBALDEFENSE_API ATurretPawn : public APawn
 {
@@ -16,23 +25,41 @@ public:
 	// Sets default values for this pawn's properties
 	ATurretPawn();
 
-    // Common properties
-    UPROPERTY(EditAnywhere, Category = "Turret Properties")
-    float Health;
-
-    UPROPERTY(EditAnywhere, Category = "Turret Properties")
-    float Damage;
-
-    UPROPERTY(EditAnywhere, Category = "Turret Properties")
-    float Range = 5 * 100.f;
-
-    UPROPERTY(EditAnywhere, Category = "Turret Properties")
-    float FireRate;
-
     // Static Mesh 
     UPROPERTY(EditAnywhere, Category = StaticMesh)
     UStaticMeshComponent* StaticMeshComponent;
 
+private:
+    // Common properties
+    UPROPERTY(VisibleAnywhere, Category = "Turret Properties")
+    FString Type = "Base";
+
+    UPROPERTY(VisibleAnywhere, Category = "Turret Properties")
+    float MaxHealth = 15;
+
+    UPROPERTY(VisibleAnywhere, Category = "Turret Properties")
+    float CurrentHealth = 10;
+
+    UPROPERTY(VisibleAnywhere, Category = "Turret Properties")
+    float Damage = 1;
+
+    UPROPERTY(VisibleAnywhere, Category = "Turret Properties")
+    float Range = 5 * 100.f;
+
+    UPROPERTY(VisibleAnywhere, Category = "Turret Properties")
+    float FireRate = 1;
+
+    UPROPERTY(VisibleAnywhere, Category = "Turret Properties")
+    int Cost = 1;
+
+public:
+    TurretInfo GetTurretInfo();
+    FString GetType();
+    float GetDamage();
+    float GetRange();
+    float GetFireRate();
+    float GetHealthRatio();
+    int GetCost();
 
 protected:
 	// Called when the game starts or when spawned

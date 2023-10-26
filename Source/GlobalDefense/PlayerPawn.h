@@ -53,6 +53,9 @@ private:
 	UPROPERTY(EditAnywhere, Category = Input)
 	UInputAction* BuildAction;
 
+	UPROPERTY(EditAnywhere, Category = Input)
+	UInputAction* LookAction;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Spawning")
 	TSubclassOf<AActor> SpotClass;
 
@@ -82,11 +85,12 @@ public:
 private:
 	// Inputs, need refactor to a controller
 	void Move(const FInputActionValue& Value);
-	void MoveActor(FVector2D& Movement);
+	void MoveCamera(FVector2D& Movement);
 	void Spin(const FInputActionValue& Value);
 	void Zoom(const FInputActionValue& Value);
 	void Build(const FInputActionValue& Value);
 	void RightClickSelectedActor(const FInputActionValue& Value);
+	void CursorMoved(const FInputActionValue& Value);
 
 public:
 
@@ -120,6 +124,9 @@ private:
 	// Move edge scrolling updates
 	void MouseEdgeScrolling();
 	bool bEdgeScrolling = false;
+
+	// Spin
+	FVector CameraCenterLocation;
 
 	// Cursor hit result
 	void UpdateCursorLocationByHItResult();

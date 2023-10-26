@@ -75,13 +75,13 @@ APlayerPawn::APlayerPawn()
 void APlayerPawn::BeginPlay()
 {
 	Super::BeginPlay();
-	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
-	{
-		if (UEnhancedInputLocalPlayerSubsystem* InputSystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
-		{
-			InputSystem->AddMappingContext(BasicInputMapping, 0);
-		}
-	}
+	//if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+	//{
+	//	if (UEnhancedInputLocalPlayerSubsystem* InputSystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+	//	{
+	//		InputSystem->AddMappingContext(BasicInputMapping, 0);
+	//	}
+	//}
 	// Initialize Actor location (on the ground)
 	FVector CamCenterLocation = SpawnBall();
 	SetActorLocation(CamCenterLocation);
@@ -144,15 +144,15 @@ void APlayerPawn::Move(const FInputActionValue& Value)
 	
 	// Input is a Vector2D
 	FVector2D MovementVector = Value.Get<FVector2D>();
-	MoveActor(MovementVector);
+	MoveCamera(MovementVector);
 }
 
 // Move according to the looking direction
-void APlayerPawn::MoveActor(FVector2D& MovementVector)
+void APlayerPawn::MoveCamera(FVector2D& MovementVector)
 {
 	FVector Movement(MovementVector.Y, MovementVector.X, 0.0f);
-	// find out which way is forward
-	const FRotator Rotation = GetActorRotation();
+	// Get camera rotation
+	const FRotator Rotation = CameraBoom->GetComponentRotation();
 	const FRotator YawRotation(0, Rotation.Yaw, 0);
 	Movement = YawRotation.RotateVector(Movement);
 
@@ -169,9 +169,11 @@ void APlayerPawn::Spin(const FInputActionValue& Value)
 	AngleDelta = FMath::Clamp(AngleDelta, -1, 1);
 	float RotationChange = AngleDelta * RotationSpeed * GetWorld()->GetDeltaSeconds();
 
-	// Adjust the rotation of the character
-	FRotator NewRotation = GetActorRotation() + FRotator(0.0f, RotationChange, 0.0f);
-	SetActorRotation(NewRotation);
+	// Modify Camera Rotation
+	FRotator CameraRotation = CameraBoom->GetComponentRotation(); // Adjust this value based on your rotation requirements
+	CameraRotation.Yaw += RotationChange;
+	// Set the camera's position and rotation relative to the pivot point
+	CameraBoom->SetWorldRotation(CameraRotation);
 }
 
 // Zoom has a certain range defined by MinZoomDistance and MaxZoomDistance of ArmLength.
@@ -244,6 +246,11 @@ void APlayerPawn::RightClickSelectedActor(const FInputActionValue& Value)
 	} 
 }
 
+void APlayerPawn::CursorMoved(const FInputActionValue& Value)
+{
+
+}
+
 void APlayerPawn::UpdateZoom(float DeltaTime)
 {
 	if (bZooming)
@@ -313,7 +320,7 @@ void APlayerPawn::MouseEdgeScrolling()
 		}
 		else {
 			bEdgeScrolling = true;
-			MoveActor(MovementVector);
+			MoveCamera(MovementVector);
 		}
 	}
 }
@@ -489,7 +496,16 @@ void APlayerPawn::DrawSelectedActorBindingBox(const UStaticMeshComponent* Mesh)
 void APlayerPawn::MoveCursorGradually(const FVector Destination)
 {
 	FVector CurrentPosition = Cursor->GetComponentLocation();
-	Cursor->SetWorldLocation(FMath::Lerp(CurrentPosition, Destination + CursorOffset, 0.1f));
+	float Distance = FVector::Dist(CurrentPosition, Destination);
+
+	// Define a base lerp speed and a scale factor
+	float BaseLerpSpeed = 0.1f;
+	float LerpScaleFactor = 0.001f; // Adjust this value to achieve the desired effect
+
+	// Calculate dynamic lerp factor
+	float DynamicLerpSpeed = FMath::Clamp(BaseLerpSpeed + (Distance * LerpScaleFactor), BaseLerpSpeed, 0.2f);
+
+	Cursor->SetWorldLocation(FMath::Lerp(CurrentPosition, Destination + CursorOffset, DynamicLerpSpeed));
 }
 
 // Rescale the default cursor radius at runtime. Scale the new cursor radius to fit the visual
@@ -536,6 +552,9 @@ FVector APlayerPawn::SpawnBall()
 		}
 
 		PreviousSpot = NewSpot;
+
+		// Need refactor
+		CameraCenterLocation = HitLocation;
 	}
 
 	return HitLocation;

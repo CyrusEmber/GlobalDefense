@@ -66,28 +66,30 @@ private:
 	UEnhancedInputLocalPlayerSubsystem* InputSystem;
 
 	/** Actions */
-	//UPROPERTY(EditAnywhere, Category = Input)
-	//UInputAction* MoveAction;
-	//UPROPERTY(EditAnywhere, Category = Input)
-	//UInputAction* SpinAction;
-	//UPROPERTY(EditAnywhere, Category = Input)
-	//UInputAction* ZoomAction;
-	//UPROPERTY(EditAnywhere, Category = Input)
-	//UInputAction* BuildAction;
+	UPROPERTY(EditAnywhere, Category = Input)
+	UInputAction* MoveAction;
+	UPROPERTY(EditAnywhere, Category = Input)
+	UInputAction* SpinAction;
+	UPROPERTY(EditAnywhere, Category = Input)
+	UInputAction* ZoomAction;
+	UPROPERTY(EditAnywhere, Category = Input)
+	UInputAction* BuildAction;
 	UPROPERTY(EditAnywhere, Category = Input)
 	UInputAction* PauseAction;
-	//UPROPERTY(EditAnywhere, Category = Input)
-	//UInputAction* RightClickAction;
+	UPROPERTY(EditAnywhere, Category = Input)
+	UInputAction* RightClickAction;
+	UPROPERTY(EditAnywhere, Category = Input)
+	UInputAction* LookAction;
 
 	/** Input Functions */
 	// Check if user assign all the variable in the BP
 	void CheckActionInput();
-	//void Move(const FInputActionValue& Value);
-	//void Spin(const FInputActionValue& Value);
-	//void Zoom(const FInputActionValue& Value);
-	//void Build(const FInputActionValue& Value);
+	void Move(const FInputActionValue& Value);
+	void Spin(const FInputActionValue& Value);
+	void Zoom(const FInputActionValue& Value);
+	void Build(const FInputActionValue& Value);
 	void PauseMenu(const FInputActionValue& Value);
-	//void RightClickSelectedActor(const FInputActionValue& Value);
+	void RightClickSelectedActor(const FInputActionValue& Value);
 
 	// Bool
 	bool bGamePaused = false;

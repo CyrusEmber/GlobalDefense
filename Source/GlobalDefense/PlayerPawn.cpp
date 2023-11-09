@@ -10,7 +10,8 @@
 #include "Components/StaticMeshComponent.h"
 #include "Components/SphereComponent.h"
 #include "DrawDebugHelpers.h"
-#include "TurretPawn.h"
+#include "Building/TurretPawn.h"
+#include "MyPlayerController.h"
 
 // Sets default values
 APlayerPawn::APlayerPawn()
@@ -18,8 +19,8 @@ APlayerPawn::APlayerPawn()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	// Set this pawn to be controlled by the lowest-numbered player
-	AutoPossessPlayer = EAutoReceiveInput::Player0;
+	// Set this pawn to be controlled by the lowest-numbered player only for single game
+	//AutoPossessPlayer = EAutoReceiveInput::Player0;
 
 	// Don't rotate character to camera direction
 	bUseControllerRotationPitch = false;
@@ -48,12 +49,14 @@ APlayerPawn::APlayerPawn()
 	Cursor->SetupAttachment(RootComponent);
 	// Disable overlap events for cursor to disable get actor result
 	Cursor->SetGenerateOverlapEvents(false);
+	Cursor->SetCollisionProfileName(TEXT("IgnoreAll"));
 
 	// Create Sphere Component for collision detection
 	CursorHitBox = CreateDefaultSubobject<USphereComponent>(TEXT("CursorHitBox"));
 	CursorHitBox->SetupAttachment(RootComponent);
 	CursorHitBox->SetSphereRadius(64.f);
 	CursorHitBox->CanCharacterStepUpOn = ECB_No;
+	CursorHitBox->SetCollisionProfileName(TEXT("OverlapAll"));
 
 	// Activate ticking in order to update the cursor every frame.
 	PrimaryActorTick.bCanEverTick = true;
@@ -90,7 +93,9 @@ void APlayerPawn::BeginPlay()
 	CachedCursorDestination = CamCenterLocation;
 	Cursor->SetWorldLocation(CachedCursorDestination);
 	Cursor->SetWorldRotation(FRotator::ZeroRotator);
+	
 	CursorHitBox->SetWorldLocation(CachedCursorDestination);
+	
 
 	// Get the original radius of cursor 50*50
 	FBox CursorBox = Cursor->Bounds.GetBox();
@@ -107,8 +112,7 @@ void APlayerPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	UpdateZoom(DeltaTime);
-	MouseEdgeScrolling();
-	UpdateCursorLocationByHItResult();
+	CursorMove();
 	UpdateSelectedActor();
 	// Debug ball
 	SpawnBall();
@@ -131,6 +135,7 @@ void APlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 		EnhancedInputComponent->BindAction(RightClickAction, ETriggerEvent::Started, this, &APlayerPawn::RightClickSelectedActor);
 		// Build
 		EnhancedInputComponent->BindAction(BuildAction, ETriggerEvent::Started, this, &APlayerPawn::Build);
+		// Cursor Look
 	}
 }
 
@@ -196,13 +201,23 @@ void APlayerPawn::Zoom(const FInputActionValue& Value)
 	ZoomFrames = 0;
 }
 
-// Need UI interactions
+// Need UI interactions, spawn a target at cursor location and update it with overlay
 void APlayerPawn::Build(const FInputActionValue& Value)
 {
 	bIsBuilding = !bIsBuilding;
 	// Check if we are in build mode, need to check this at tick
 	if (bIsBuilding) {
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, FString::Printf(TEXT("In Build Mode")));
+		TurretPreview = Cast<ATurretPawn>(PlaceActorGridSnapping());
+		TurretPreview->SetGreenOverlay();
+		CursorHitBox->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);
+	}
+	// End of build mode
+	if (!bIsBuilding) {
+		CachedRoundedDestination = FVector(0, 0, 0);
+		TurretPreview->Destroy();
+		TurretPreview = nullptr;
+		CursorHitBox->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
 	}
 }
 
@@ -215,7 +230,7 @@ void APlayerPawn::RightClickSelectedActor(const FInputActionValue& Value)
 		}
 		FString ActorName = SelectedActor->GetName();
 		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Yellow, FString::Printf(TEXT("Right Click on selected Actor: %s"), *ActorName));
-		ATurretPawn* Turret = dynamic_cast<ATurretPawn*>(SelectedActor);
+		ATurretPawn* Turret = Cast<ATurretPawn>(SelectedActor);
 		if (Turret)
 		{
 			GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Yellow, FString::Printf(TEXT("Right Click on a turret")));
@@ -226,15 +241,9 @@ void APlayerPawn::RightClickSelectedActor(const FInputActionValue& Value)
 	} 
 	else {
 		if (!bIsCursorSelecting) {
-			GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Yellow, FString::Printf(TEXT("Spawn Something")));
-			FRotator Rotation = FRotator(0, 0, 0);
-			float Scale = 0;
-			FActorSpawnParameters SpawnParams;
-			SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-			FVector NewDestination = FVector(CachedCursorDestination.X, CachedCursorDestination.Y, CachedCursorDestination.Z + 0.f);
-
-			ATurretPawn* NewTurret = GetWorld()->SpawnActor<ATurretPawn>(TurretBase, NewDestination, FRotator::ZeroRotator, SpawnParams);
-			NewTurret->Initialization();
+			//TurretPreview->Destroy();
+			//TurretPreview = nullptr;
+			PlaceActorGridSnapping();
 			//TurretBase->Spawn(CachedCursorDestination, Rotation, Scale);
 		}
 		else {
@@ -244,11 +253,6 @@ void APlayerPawn::RightClickSelectedActor(const FInputActionValue& Value)
 		}
 
 	} 
-}
-
-void APlayerPawn::CursorMoved(const FInputActionValue& Value)
-{
-
 }
 
 void APlayerPawn::UpdateZoom(float DeltaTime)
@@ -275,89 +279,97 @@ void APlayerPawn::UpdateZoom(float DeltaTime)
 	}
 }
 
+void APlayerPawn::CursorMove()
+{
+	APlayerController* PlayerController = Cast<APlayerController>(Controller);
+	float MouseX, MouseY;
+	if (PlayerController && PlayerController->GetMousePosition(MouseX, MouseY)) {
+		PlayerController->GetMousePosition(MouseX, MouseY);
+		FVector2D CursorScreenPosition = FVector2D(MouseX, MouseY);
+		UpdateCursorLocationByHItResult(CursorScreenPosition);
+		MouseEdgeScrolling(CursorScreenPosition);
+	}
+
+	if (bIsBuilding) {
+		UpdateTurretPreview();
+	}
+}
+
 /** Defined ScreenWidth ScreenHeight ScrollZoneSize*/
-void APlayerPawn::MouseEdgeScrolling()
+void APlayerPawn::MouseEdgeScrolling(FVector2D CursorScreenPosition)
 {
 	const float ScreenWidth = GEngine->GameViewport->Viewport->GetSizeXY().X;
 	const float ScreenHeight = GEngine->GameViewport->Viewport->GetSizeXY().Y;
 	const float ScrollZoneSize = ScreenWidth * 0.08;
-	float MouseX, MouseY; 
+	float MouseX = CursorScreenPosition.X;
+	float MouseY = CursorScreenPosition.Y;
 
-	APlayerController* PlayerController = Cast<APlayerController>(Controller);
-	if (PlayerController && PlayerController->GetMousePosition(MouseX, MouseY))
+	// Display the FString using AddOnScreenDebugMessage
+	float DistanceToTop = MouseY; 
+	float DistanceToBottom = ScreenHeight - MouseY;
+	float DistanceToLeft = MouseX;
+	float DistanceToRight = ScreenWidth - MouseX;
+
+	FVector2D MovementVector = FVector2D(0.f, 0.f);
+	// Check if the cursor is within scroll zone
+	if (DistanceToTop < ScrollZoneSize)
 	{
-		// Display the FString using AddOnScreenDebugMessage
-		float DistanceToTop = MouseY; 
-		float DistanceToBottom = ScreenHeight - MouseY;
-		float DistanceToLeft = MouseX;
-		float DistanceToRight = ScreenWidth - MouseX;
-
-		FVector2D MovementVector = FVector2D(0.f, 0.f);
-		// Check if the cursor is within scroll zone
-		if (DistanceToTop < ScrollZoneSize)
-		{
-			MovementVector.Y += 1 - DistanceToTop / ScrollZoneSize;
-		}
-
-		else if (DistanceToBottom < ScrollZoneSize)
-		{
-			MovementVector.Y -= 1 - DistanceToBottom / ScrollZoneSize;
-		}
-
-		if (DistanceToLeft < ScrollZoneSize)
-		{
-			MovementVector.X -= 1 - DistanceToLeft / ScrollZoneSize;
-		}
-
-		else if (DistanceToRight < ScrollZoneSize)
-		{
-			MovementVector.X += 1 - DistanceToRight / ScrollZoneSize;
-		}
-
-		if (MovementVector == FVector2D(0.0f, 0.0f)) {
-			bEdgeScrolling = false;
-			return;
-		}
-		else {
-			bEdgeScrolling = true;
-			MoveCamera(MovementVector);
-		}
+		MovementVector.Y += 1 - DistanceToTop / ScrollZoneSize;
 	}
+
+	else if (DistanceToBottom < ScrollZoneSize)
+	{
+		MovementVector.Y -= 1 - DistanceToBottom / ScrollZoneSize;
+	}
+
+	if (DistanceToLeft < ScrollZoneSize)
+	{
+		MovementVector.X -= 1 - DistanceToLeft / ScrollZoneSize;
+	}
+
+	else if (DistanceToRight < ScrollZoneSize)
+	{
+		MovementVector.X += 1 - DistanceToRight / ScrollZoneSize;
+	}
+
+	if (MovementVector == FVector2D(0.0f, 0.0f)) {
+		bEdgeScrolling = false;
+		return;
+	}
+	else {
+		bEdgeScrolling = true;
+		MoveCamera(MovementVector);
+	}
+	
 }
 
-// Update cursor and cursor hitbox location according to the mouse position
-void APlayerPawn::UpdateCursorLocationByHItResult()
+// Update cursor and cursor hitbox location according to the current mouse position
+void APlayerPawn::UpdateCursorLocationByHItResult(FVector2D CursorScreenPosition)
 {
 	APlayerController* PlayerController = Cast<APlayerController>(Controller);
-	// We look for the location in the world where the player has pressed the input
 	FHitResult Hit;
 	bool bHitSuccessful = false;
 	// Ignore the player's pawn or cursor actor
 	FCollisionQueryParams CollisionParams;
 	CollisionParams.AddIgnoredComponent(Cursor);
 
+	bHitSuccessful = PlayerController->GetHitResultAtScreenPosition(CursorScreenPosition, ECollisionChannel::ECC_Visibility, CollisionParams, Hit);
+	//bHitSuccessful = PlayerController->GetHitResultUnderCursor(ECollisionChannel::ECC_PhysicsBody, true, Hit);
 
-	float MouseX, MouseY;
-	if (PlayerController && PlayerController->GetMousePosition(MouseX, MouseY)) {
-		PlayerController->GetMousePosition(MouseX, MouseY);
-		FVector2D CursorScreenPosition = FVector2D(MouseX, MouseY);
-		bHitSuccessful = PlayerController->GetHitResultAtScreenPosition(CursorScreenPosition, ECollisionChannel::ECC_Visibility, CollisionParams, Hit);
-		//bHitSuccessful = PlayerController->GetHitResultUnderCursor(ECollisionChannel::ECC_PhysicsBody, true, Hit);
-
-		// If we hit a surface, cache the location
-		if (bHitSuccessful)
-		{
-			CachedCursorDestination = Hit.Location;
-		}
-		
-		CursorHitBox->SetWorldLocation(CachedCursorDestination);
-		// Not allow cursor updating when selecting
-		// Rescale
-		if (!bIsCursorSelecting) {
-			MoveCursorGradually(CachedCursorDestination);
-			SetCursorRadiusGradually(0.5 * DefaultCursorRadius);
-		}
+	// If we hit a surface, cache the location
+	if (bHitSuccessful)
+	{
+		CachedCursorDestination = Hit.Location;
 	}
+		
+	CursorHitBox->SetWorldLocation(CachedCursorDestination);
+	// Not allow cursor updating when selecting
+	// Rescale due to the default cursor size
+	if (!bIsCursorSelecting) {
+		MoveCursorGradually(CachedCursorDestination);
+		SetCursorRadiusGradually(0.5 * DefaultCursorRadius);
+	}
+	
 }
 
 void APlayerPawn::UpdateSelectedActor()
@@ -366,60 +378,65 @@ void APlayerPawn::UpdateSelectedActor()
 
 	if (OverlappingActors.Num() == 0) {
 		bIsCursorSelecting = false;
-		return;
 	}
 	else {
 		// Set a flag to indicate that selected some actor
 		bIsCursorSelecting = true;
 	}
-		
-	//// Debug
-	//else {
-	//	for (AActor* Actor : OverlappingActors) {
-	//		FString LocationString = Actor->GetName();
-	//		
-	//		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Yellow, FString::Printf(TEXT("OverlappingActors numbers: %s"), *LocationString));
-	//	}
-	//	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Yellow, FString::Printf(TEXT("OverlappingActors numbers: %d"), OverlappingActors.Num()));
-	//}
 	
-	// Find the closest actor
-	SelectedActor = OverlappingActors[0];
-	float MinDistance = 10000.f;
-	for (AActor* Actor : OverlappingActors)
-	{
-		FVector ActorPosition = Actor->GetActorLocation();
-		float Actor2CursorDistance = FVector::Dist(CachedCursorDestination, ActorPosition);
-		if (Actor2CursorDistance < MinDistance) {
-			MinDistance = Actor2CursorDistance;
-			SelectedActor = Actor;
-		}
+	// Find the closest actor, only update things 
+	AActor* ClosestActor = GetClosestActorToCursor(OverlappingActors);
+	if (SelectedActor != ClosestActor) {
+		SelectedActor = ClosestActor;
+		OnSelectedActorChanged(SelectedActor);
 	}
+
 	// Move the cursor to the closest actor smoothly with Lerp transition
 	if (SelectedActor)
 	{
 		//CachedTurret = dynamic_cast<ATurretPawn*>(SelectedActor);
 		// Get the static mesh component of the closest seleted actor
-		UStaticMeshComponent* StaticMeshComponent = SelectedActor->FindComponentByClass<UStaticMeshComponent>();
-		if (!StaticMeshComponent)
+		UStaticMeshComponent* TurretMesh = SelectedActor->FindComponentByClass<UStaticMeshComponent>();
+		if (!TurretMesh)
 		{
 			FString ActorName = SelectedActor->GetName();
 			GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Yellow, FString::Printf(TEXT("No StaticMeshComponent for Actor: %s"), *ActorName));
+			return;
 		}
 		CurrentCursorLocation = Cursor->GetComponentLocation();
-		TargetCursorLocation = GetPositionOnGround(StaticMeshComponent);
-		DrawSelectedActorBindingBox(StaticMeshComponent);
+		TargetCursorLocation = GetPositionOnBottom(TurretMesh);
+		DrawSelectedActorBindingBox(TurretMesh);
 
 		// Set cursor 
 		MoveCursorGradually(TargetCursorLocation);
-		float NewCursorRadius = GetTargetCursorSize(StaticMeshComponent);
+		float NewCursorRadius = GetTargetCursorSize(TurretMesh);
 		SetCursorRadiusGradually(NewCursorRadius);
 	}
 }
-// For a actor center position, find its position on the ground by the component bounds 
 
+
+AActor* APlayerPawn::GetClosestActorToCursor(const TArray<AActor*>& Actors)
+{	
+	if (Actors.Num() == 0) return nullptr;
+	AActor* ClosestActor = Actors[0];
+	float MinDistance = FVector::Dist(CachedCursorDestination, ClosestActor->GetActorLocation());
+
+	for (AActor* Actor : Actors)
+	{
+		float Actor2CursorDistance = FVector::Dist(CachedCursorDestination, Actor->GetActorLocation());
+		if (Actor2CursorDistance < MinDistance)
+		{
+			MinDistance = Actor2CursorDistance;
+			ClosestActor = Actor;
+		}
+	}
+
+	return ClosestActor;
+}
+
+// For a actor center position, find its position on the bottom by the component bounds 
 // Suppose the actor center is binding box center
-FVector APlayerPawn::GetPositionOnGround(const UStaticMeshComponent* Mesh)
+FVector APlayerPawn::GetPositionOnBottom(const UStaticMeshComponent* Mesh)
 {
 
 	FVector MeshCenterPosition = Mesh->GetComponentLocation();
@@ -431,6 +448,68 @@ FVector APlayerPawn::GetPositionOnGround(const UStaticMeshComponent* Mesh)
 	MeshCenterPosition.Z -= ZExtent;
 	return MeshCenterPosition;
 }
+
+
+void APlayerPawn::UpdateTurretPreview()
+{
+	if (TurretPreview) {
+		TurretPreview->GetOverlappingActors(PreviewOverlappingActors);
+		if (PreviewOverlappingActors.Num() > 0 && !bIsActorColliding) {
+			TurretPreview->SetRedOverlay();
+			bIsActorColliding = true;
+		}
+		else if (PreviewOverlappingActors.Num() == 0 && bIsActorColliding) {
+			TurretPreview->SetGreenOverlay();
+			bIsActorColliding = false;
+		}
+		MoveActorGridSnapping2D(TurretPreview);
+	}
+	
+}
+
+void APlayerPawn::CreateTurretPreview()
+{
+	
+}
+
+FVector APlayerPawn::GridSnapping(FVector CurrentLocation) 
+{
+	// Snap position to the nearest grid point
+	float GridSize = 100.0f; // Size of each grid cell
+	FVector RoundedDestination;
+	RoundedDestination.X = FMath::RoundToFloat(CurrentLocation.X / GridSize) * GridSize;
+	RoundedDestination.Y = FMath::RoundToFloat(CurrentLocation.Y / GridSize) * GridSize;
+	RoundedDestination.Z = CurrentLocation.Z;
+	return RoundedDestination;
+}
+
+AActor* APlayerPawn::PlaceActorGridSnapping()
+{
+	FRotator Rotation = FRotator(0, 0, 0);
+	float Scale = 0;
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	FVector CurrentLocation = FVector(CachedCursorDestination.X, CachedCursorDestination.Y, CachedCursorDestination.Z + 0.f);
+	FVector RoundedDestination = GridSnapping(CurrentLocation);
+	
+	// Spawn the turret at mouse location
+	ATurretPawn* NewTurret = GetWorld()->SpawnActor<ATurretPawn>(TurretBase, RoundedDestination, FRotator::ZeroRotator, SpawnParams);
+	NewTurret->Initialization();
+
+	return NewTurret;
+}
+
+void APlayerPawn::MoveActorGridSnapping2D(AActor* Actor)
+{
+	FVector CurretLocation = Actor->GetActorLocation();
+	FVector NewLocation = FVector(CachedCursorDestination.X, CachedCursorDestination.Y, CurretLocation.Z);
+	FVector RoundedDestination = GridSnapping(NewLocation);
+	if (CachedRoundedDestination != RoundedDestination) {
+		Actor->SetActorLocation(RoundedDestination);
+		CachedRoundedDestination = RoundedDestination;
+	}	
+}
+
 
 float APlayerPawn::GetTargetCursorSize(const UStaticMeshComponent* Mesh)
 {
@@ -519,6 +598,23 @@ void APlayerPawn::SetCursorRadiusGradually(const float NewCursorRadius)
 	Cursor->SetWorldScale3D(FMath::Lerp(Cursor->GetComponentScale(), NewScale, 0.1f));
 }
 
+void APlayerPawn::OnSelectedActorChanged(AActor* ChangedActor)
+{
+	AMyPlayerController* PC = Cast<AMyPlayerController>(Controller);
+	if (!PC) {
+		return;
+	}
+
+	ATurretPawn* TurretPawn = Cast<ATurretPawn>(ChangedActor);
+
+	if (TurretPawn) {
+		PC->UpdateInformationUI(TurretPawn);
+		PC->ShowInformationUI();
+	}
+	else {
+		PC->HideInformationUI();
+	}
+}
 
 
 FVector APlayerPawn::SpawnBall()
@@ -531,6 +627,7 @@ FVector APlayerPawn::SpawnBall()
 	FHitResult HitResult;
 	FCollisionQueryParams TraceParams(FName(TEXT("CameraTrace")), false, this);
 	TraceParams.AddIgnoredActor(PreviousSpot);
+	TraceParams.AddIgnoredActor(this);
 
 	// Perform the line trace
 	FVector StartTrace = CameraLocation;
@@ -559,5 +656,10 @@ FVector APlayerPawn::SpawnBall()
 
 	return HitLocation;
 
+}
+
+void APlayerPawn::DebugLog(FString BugString)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Yellow, BugString);
 }
 

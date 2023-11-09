@@ -82,7 +82,7 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-private:
+public:
 	// Inputs, need refactor to a controller
 	void Move(const FInputActionValue& Value);
 	void MoveCamera(FVector2D& Movement);
@@ -90,9 +90,7 @@ private:
 	void Zoom(const FInputActionValue& Value);
 	void Build(const FInputActionValue& Value);
 	void RightClickSelectedActor(const FInputActionValue& Value);
-	void CursorMoved(const FInputActionValue& Value);
 
-public:
 
 
 /** Mutable Game Settings like camera moving speed */
@@ -122,14 +120,16 @@ private:
 	float ZoomTargetArmLength;
 
 	// Move edge scrolling updates
-	void MouseEdgeScrolling();
+	void MouseEdgeScrolling(FVector2D CursorScreenPosition);
 	bool bEdgeScrolling = false;
 
 	// Spin
 	FVector CameraCenterLocation;
 
 	// Cursor hit result
-	void UpdateCursorLocationByHItResult();
+	void CursorMove();
+	void UpdateCursorLocationByHItResult(FVector2D CursorScreenPosition);
+	AActor* GetClosestActorToCursor(const TArray<AActor*>& Actors);
 	FVector CachedCursorDestination;
 	FVector CursorOffset = FVector(0.0f, 0.0f, 1.0f);
 
@@ -138,25 +138,43 @@ private:
 	void UpdateSelectedActor();
 	TArray<AActor*> OverlappingActors;
 	bool bIsCursorSelecting;
-	FTimerHandle CursorMoveTimeCurrentPositionrHandle;
+	FTimerHandle CursorMoveTimeCurrentPositionHandle;
 	FVector CurrentCursorLocation;
 	FVector TargetCursorLocation;
 	AActor* SelectedActor;
-	ATurretPawn* CachedTurret = nullptr;
+	
 	const float Alpha = 0.1;
 
+// Build mode
 private:
-	// Build mode
 	bool bIsBuilding = false;
+	bool bIsActorColliding = false;
+	ATurretPawn* TurretPreview = nullptr;
+	TArray<AActor*> PreviewOverlappingActors;
+
+	void UpdateTurretPreview();
+	// Destroy certain components make it only a mesh
+	void CreateTurretPreview();
+
+private:
+	FVector GridSnapping(FVector CurrentLocation);
+	// Place the actor on ground according to grid snapping
+	AActor* PlaceActorGridSnapping();
+	// Need lerp? Only move in 2D
+	void MoveActorGridSnapping2D(AActor* Actor);
+	// Cached grid snapping location for build mode, used to check if the current location snapping location is same as this, otherwise move the actor. Set it to nullptr when build mode ends
+	FVector CachedRoundedDestination;
 
 
 // Helper functions
 private:
-	FVector GetPositionOnGround(const UStaticMeshComponent* Mesh);
+	FVector GetPositionOnBottom(const UStaticMeshComponent* Mesh);
 	float GetTargetCursorSize(const UStaticMeshComponent* Mesh);
 	void DrawSelectedActorBindingBox(const UStaticMeshComponent* Mesh);
 	void MoveCursorGradually(const FVector Destination);
 	void SetCursorRadiusGradually(const float NewCursorRadius);
+	// Update the actor information and show the UI when the actor is some turret.
+	void OnSelectedActorChanged(AActor* ChangedActor);
 
 
 
@@ -164,5 +182,6 @@ private:
 private:
 	AActor* PreviousSpot;
 	FVector SpawnBall();
+	void DebugLog(FString BugString);
 
 };

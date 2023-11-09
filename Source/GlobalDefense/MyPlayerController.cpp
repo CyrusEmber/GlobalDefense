@@ -7,8 +7,8 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 #include "PlayerPawn.h"
-#include "TurretPawn.h"
-#include "InformationUIWidget.h"
+#include "Building/TurretPawn.h"
+#include "UI/InformationUIWidget.h"
 
 
 void AMyPlayerController::BeginPlay()
@@ -71,7 +71,7 @@ void AMyPlayerController::Initialization()
     // UI
     InitializeUI(HUDWidgetClass, HUDWidgetInstance);
     InitializeUI(PauseWidgetClass, PauseWidgetInstance);
-    //InitializeUI(InformationWidgetClass, InformationWidgetInstance);
+    InitializeUI(InformationWidgetClass, InformationWidgetInstance);
     if (PauseWidgetInstance) {
         PauseWidgetInstance->SetVisibility(ESlateVisibility::Hidden);
     }
@@ -93,7 +93,7 @@ void AMyPlayerController::InitializeUI(TSubclassOf<UUserWidget> WidgetClass, UUs
         }
     }
     else {
-        GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Yellow, FString::Printf(TEXT("No WidgetClass in BP")));
+        GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Red, FString::Printf(TEXT("No WidgetClass for %s"), *GetName()));
     }
 }
 
@@ -104,12 +104,25 @@ void AMyPlayerController::CheckActionInput()
     }
 }
 
+void AMyPlayerController::Move(const FInputActionValue& Value)
+{
+}
+
+void AMyPlayerController::Spin(const FInputActionValue& Value)
+{
+}
+
+void AMyPlayerController::Zoom(const FInputActionValue& Value)
+{
+}
+
+void AMyPlayerController::Build(const FInputActionValue& Value)
+{
+}
+
 void AMyPlayerController::PauseMenu(const FInputActionValue& Value)
 {
     bGamePaused = !bGamePaused;
-    //GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Yellow,
-    //    FString::Printf(TEXT("Pause in my Player Controller: %s"), bGamePaused ? TEXT("true") : TEXT("false")));
-
 
     if (bGamePaused) {
         //SetPause(true);
@@ -128,10 +141,15 @@ void AMyPlayerController::PauseMenu(const FInputActionValue& Value)
     }
 }
 
+void AMyPlayerController::RightClickSelectedActor(const FInputActionValue& Value)
+{
+}
+
 void AMyPlayerController::UpdateInformationUI(ATurretPawn* TurretPawn)
 {
-    UInformationUIWidget* InformationUI = dynamic_cast<UInformationUIWidget*>(InformationWidgetInstance);
+    UInformationUIWidget* InformationUI = Cast<UInformationUIWidget>(InformationWidgetInstance);
     TurretInfo Info = TurretPawn->GetTurretInfo();
+
     if (InformationUI) {
         InformationUI->UpdateDisplayInformation(Info);
     }
@@ -139,10 +157,21 @@ void AMyPlayerController::UpdateInformationUI(ATurretPawn* TurretPawn)
 
 void AMyPlayerController::ShowInformationUI()
 {
-    InformationWidgetInstance->SetVisibility(ESlateVisibility::Visible);
+    if (InformationWidgetInstance) {
+        InformationWidgetInstance->SetVisibility(ESlateVisibility::Visible);
+    }
+    else {
+        GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Yellow, FString::Printf(TEXT("WidgetInstance is nullptr")));
+    }
+    
 }
 
 void AMyPlayerController::HideInformationUI()
 {
-    InformationWidgetInstance->SetVisibility(ESlateVisibility::Hidden);
+    if (InformationWidgetInstance) {
+        InformationWidgetInstance->SetVisibility(ESlateVisibility::Hidden);
+    }
+    else {
+        GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Yellow, FString::Printf(TEXT("WidgetInstance is nullptr")));
+    }
 }

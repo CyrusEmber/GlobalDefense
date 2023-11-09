@@ -2,7 +2,7 @@
 
 
 #include "EnemyBase.h"
-#include "TurretPawn.h"
+#include "Building/TurretPawn.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
@@ -16,8 +16,8 @@ AEnemyBase::AEnemyBase()
 	}
 
 	// Create StaticMesh component for turrent
-	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Turrent"));
-	StaticMeshComponent->SetupAttachment(RootComponent);
+	TurretMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Turrent"));
+	TurretMesh->SetupAttachment(RootComponent);
 
 }
 
@@ -47,6 +47,11 @@ void AEnemyBase::Initialization()
 {
 	FindTarget();
 	GetMovingDirection();
+	//// Enable physics simulation
+	//TurretMesh->SetSimulatePhysics(true);
+
+	//// Ensure that hit events are generated during simulation
+	//TurretMesh->SetNotifyRigidBodyCollision(true);
 }
 
 void AEnemyBase::Move()
@@ -82,5 +87,13 @@ void AEnemyBase::GetMovingDirection()
 		Direction = (Target->GetActorLocation() - GetActorLocation()).GetSafeNormal();
 	}
 	
+}
+
+void AEnemyBase::SimpleTakeDamage(float BulletDamage)
+{
+	Health -= BulletDamage;
+	if (Health <= 0) {
+		Destroy();
+	}
 }
 

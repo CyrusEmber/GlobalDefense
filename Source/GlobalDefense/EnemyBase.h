@@ -18,17 +18,17 @@ public:
 
 	// Common properties
 	UPROPERTY(EditAnywhere, Category = "Turret Properties")
-	float Health;
+	float Health = 100;
 
 	UPROPERTY(EditAnywhere, Category = "Turret Properties")
-	float Damage;
+	float EnemyDamage;
 
 	UPROPERTY(EditAnywhere, Category = "Turret Properties")
 	float Speed = 50;
 
 	// Static Mesh 
 	UPROPERTY(EditAnywhere, Category = StaticMesh)
-	UStaticMeshComponent* StaticMeshComponent;
+	UStaticMeshComponent* TurretMesh;
 
 protected:
 	// Called when the game starts or when spawned
@@ -41,10 +41,14 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	// Functions common to all turrets
+// Enemy function called globally
 public:
 	virtual void Initialization();
+	//virtual void TakeDamage(float Damage);
+	virtual void SimpleTakeDamage(float DamageAmount);
+	// ENGINE_API virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
+// Functions common to all Enemies
 protected:
 	virtual void Move();
 	// Currently find a random turret target
@@ -52,5 +56,4 @@ protected:
 	virtual void GetMovingDirection();
 	FVector Direction;
 	ATurretPawn* Target;
-
 };
